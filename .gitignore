@@ -6,6 +6,7 @@ node_modules/
 out/
 dist/
 build/
+*.tsbuildinfo
 
 # Env / secrets
 .env
@@ -26,5 +27,8 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Playwright MCP scratch output
+.playwright-mcp/
 
 # Note: memory/*.md is intentionally NOT ignored — Boss wants git history of agent memory

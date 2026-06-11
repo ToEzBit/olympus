@@ -1,0 +1,20 @@
+{
+  "name": "olympus",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:engine": "pnpm --filter @olympus/engine dev",
+    "dev:web": "pnpm --filter @olympus/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0",
+    "@types/node": "^22.10.0"
+  }
+}
