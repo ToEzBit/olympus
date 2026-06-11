@@ -1,6 +1,6 @@
 # Contract 0002 — WebSocket protocol (Engine <-> Web UI)
 
-**Status:** proposed — needs Boss/architect sign-off (S1 acceptance criteria)
+**Status:** accepted
 **Source of truth:** `packages/shared/src/ws-protocol.ts`
 
 ## Transport split (S1)
@@ -82,9 +82,8 @@ Engine --WS ServerEventMessage(task.completed)--> UI
 Engine --WS ServerEventMessage(agent.status_changed: idle)--> UI
 ```
 
-## Open questions for reviewer
+## Decisions
 
-- Confirm HTTP-for-commands / WS-for-events split is acceptable for S1, vs.
-  an all-WS protocol. Rationale: simplest possible Boss input path; WS stays
-  one-directional which simplifies the S1 server. `ClientCommandMessage` is
-  reserved if we want to unify later.
+- HTTP-for-commands / WS-for-events split confirmed for S1. Verified
+  end-to-end with a real `claude -p` call. `ClientCommandMessage` remains
+  reserved for a possible future unified WS channel.

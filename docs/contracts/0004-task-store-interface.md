@@ -1,6 +1,6 @@
 # Contract 0004 — TaskStore interface
 
-**Status:** proposed — needs Boss/architect sign-off (S1 acceptance criteria)
+**Status:** accepted
 **Source of truth:** `packages/shared/src/task-store.ts`
 
 ## Purpose
@@ -74,7 +74,7 @@ record updated yet" and "has the event been broadcast yet". Future slices
 may revisit this if TaskStore needs to react to events it doesn't originate
 (e.g. delegation).
 
-## Open questions for reviewer
+## Decisions
 
-- `list()` filter shape — sufficient for S1 (no consumer needs it yet, but
-  required to keep the interface realistic for S6's query needs)?
+- `list()` filter shape (`agentId` / `status`) confirmed as sufficient for
+  S1 and realistic for S6's query needs.

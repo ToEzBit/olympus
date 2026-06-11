@@ -1,6 +1,6 @@
 # Contract 0001 — Event schema
 
-**Status:** proposed — needs Boss/architect sign-off (S1 acceptance criteria)
+**Status:** accepted
 **Source of truth:** `packages/shared/src/events.ts`
 
 ## Overview
@@ -126,8 +126,8 @@ branches of `OlympusEvent`. Existing branches are never repurposed —
 consumers that `switch` exhaustively on `event.type` will get a compile
 error when a new branch is added, which is the intended forcing function.
 
-## Open questions for reviewer
+## Decisions
 
-- Is `correlationId === taskId` for S1 acceptable, or should they be
-  distinct fields from the start (with S1 just setting them equal)? Current
-  types keep them as separate fields so no breaking change is needed later.
+- `correlationId` and `taskId` remain distinct fields, with S1 setting
+  `correlationId === taskId`. No breaking change needed for future
+  delegation/discussion slices.

@@ -1,6 +1,6 @@
 # Contract 0003 — Monorepo structure
 
-**Status:** proposed — needs Boss/architect sign-off (S1 acceptance criteria)
+**Status:** accepted
 
 ## Tooling
 
@@ -70,19 +70,24 @@ olympus/
   only talks to the Engine over HTTP (`POST /command`) and WebSocket, using
   types from `@olympus/shared`.
 
-## Running (once implemented)
+## Running
 
 ```bash
 pnpm install
+pnpm --filter @olympus/shared build # builds dist/ (required after editing shared)
 pnpm --filter @olympus/engine dev   # starts Engine process (HTTP + WS)
 pnpm --filter @olympus/web dev      # starts Next.js dev server
 pnpm test                           # runs vitest across all packages
 ```
 
-## Open questions for reviewer
+`@olympus/shared` ships `main`/`types` pointing at `dist/` (built via `tsc`),
+not raw `src/`. Turbopack (used by `@olympus/web`'s dev server) cannot
+resolve the `.js`-suffixed relative imports in `src/` against `.ts` files —
+only `tsc`'s NodeNext resolution does that. After editing
+`packages/shared/src/*`, re-run `pnpm --filter @olympus/shared build` before
+`@olympus/engine`/`@olympus/web` will see the change.
 
-- `@olympus/*` package scope — fine to keep, or prefer unscoped names
-  (`shared`, `engine`, `web`)?
-- Engine HTTP/WS ports — proposed defaults `3001` (HTTP) and `3002` (WS, or
-  share one port with an `Upgrade` handler). To be finalized during Engine
-  implementation; not a blocker for this contract review.
+## Decisions
+
+- `@olympus/*` package scope confirmed.
+- Engine HTTP `:3001` / WS `:3002` confirmed, verified end-to-end.
