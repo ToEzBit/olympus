@@ -49,6 +49,17 @@ GEMINI_SYSTEM_MD=./persona.md gemini -p "prompt" --output-format json | jq '.sta
 #   "mcpServers": { "olympus": { "command": "node", "args": ["./tool-server.js"] } } }
 ```
 
+> **อัปเดตจาก S2 (gemini-cli 0.46.0, ทดสอบจริง):**
+> - ต้องเพิ่ม `--skip-trust` (หรือ `GEMINI_CLI_TRUST_WORKSPACE=true`) ไม่งั้น
+>   headless ปฏิเสธด้วย "not a trusted directory" — ตารางด้านบนยังไม่ได้รวม flag นี้
+> - `settings.json` → `tools.core: []` **ใช้ไม่ได้** กับเวอร์ชันนี้: gemini-cli ส่ง
+>   `tools: [{"functionDeclarations": []}]` ไป API แล้วโดน 400
+>   ("`tools[0].tool_type` ... must have one initialized field") — ทุก call fail
+> - ใช้ `--approval-mode plan` แทน: read-only tools ยังลงทะเบียนอยู่ (เลี่ยง bug
+>   array ว่าง) แต่ write/exec tool ถูกบล็อกที่ policy layer — จาก
+>   `apps/engine/src/providers/gemini-provider.ts` ตอบโดยไม่เรียก tool เลย
+>   (`stats.tools.totalCalls: 0`) ในเคสที่ทดสอบ
+
 ## 🔴 Codex (`codex exec`) — ใช้ได้ แต่มี "หนาม"
 
 | ต้องการ | วิธี |

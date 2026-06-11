@@ -4,6 +4,7 @@ import { AgentRuntime } from "./agent-runtime.js";
 import { EventBus } from "./event-bus.js";
 import { startHttpServer } from "./http-server.js";
 import { ClaudeProvider } from "./providers/claude-provider.js";
+import { GeminiProvider } from "./providers/gemini-provider.js";
 import { InMemoryTaskStore } from "./task-store/in-memory-task-store.js";
 import { startWsServer } from "./ws-server.js";
 
@@ -20,6 +21,7 @@ const runtime = new AgentRuntime({
   taskStore,
   providers: {
     claude: new ClaudeProvider(),
+    gemini: new GeminiProvider(),
   },
 });
 

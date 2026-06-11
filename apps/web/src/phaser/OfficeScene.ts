@@ -1,5 +1,6 @@
 import * as Phaser from "phaser";
 import type { AgentVisualState, OfficeState } from "../lib/agent-state-store";
+import { colorForAgent } from "./agent-color";
 import { OFFICE_SCENE_SIZE } from "./constants";
 
 const SCENE_WIDTH = OFFICE_SCENE_SIZE.width;
@@ -66,7 +67,9 @@ export class OfficeScene extends Phaser.Scene {
     const x = Phaser.Math.Between(WANDER_BOUNDS.x, WANDER_BOUNDS.x + WANDER_BOUNDS.width);
     const y = Phaser.Math.Between(WANDER_BOUNDS.y, WANDER_BOUNDS.y + WANDER_BOUNDS.height);
 
-    const body = this.add.circle(0, 0, 20, STATUS_COLOR[agentState.status]);
+    const body = this.add
+      .circle(0, 0, 20, STATUS_COLOR[agentState.status])
+      .setStrokeStyle(4, colorForAgent(agentState.agentId));
     const nameLabel = this.add.text(0, 28, agentState.name, { fontSize: "14px", color: "#e6e6e6" }).setOrigin(0.5, 0);
 
     const speechText = this.add

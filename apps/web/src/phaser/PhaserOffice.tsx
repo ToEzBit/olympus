@@ -2,14 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import type { Game } from "phaser";
-import type { ServerMessage } from "@olympus/shared";
-import { connectToEngine } from "../lib/ws-client";
-import { initialOfficeState, reduceOfficeState, type OfficeState } from "../lib/agent-state-store";
+import type { OfficeState } from "../lib/agent-state-store";
 import { OFFICE_SCENE_SIZE } from "./constants";
 
-export function PhaserOffice({ wsUrl }: { wsUrl: string }) {
+export function PhaserOffice({ getState }: { getState: () => OfficeState }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stateRef = useRef<OfficeState>(initialOfficeState);
 
   useEffect(() => {
     let game: Game | undefined;
@@ -19,19 +16,14 @@ export function PhaserOffice({ wsUrl }: { wsUrl: string }) {
     // not be imported during Next.js server-side rendering.
     void import("./mount").then(({ mountOffice }) => {
       if (disposed || !containerRef.current) return;
-      game = mountOffice(containerRef.current, () => stateRef.current);
-    });
-
-    const disconnect = connectToEngine(wsUrl, (message: ServerMessage) => {
-      stateRef.current = reduceOfficeState(stateRef.current, message);
+      game = mountOffice(containerRef.current, getState);
     });
 
     return () => {
       disposed = true;
-      disconnect();
       game?.destroy(true);
     };
-  }, [wsUrl]);
+  }, [getState]);
 
   return <div ref={containerRef} style={{ width: OFFICE_SCENE_SIZE.width, height: OFFICE_SCENE_SIZE.height }} />;
 }

@@ -14,8 +14,8 @@ export interface Persona {
   systemPrompt: string;
 }
 
-/** S1: only "claude". S2 (issue #3) adds "gemini". */
-export type ModelBackend = "claude";
+/** S1: "claude". S2 (issue #3) adds "gemini". */
+export type ModelBackend = "claude" | "gemini";
 
 export interface AgentConfig {
   /** Stable agent id, e.g. "apollo". */

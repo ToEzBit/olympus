@@ -81,6 +81,38 @@ describe("reduceOfficeState", () => {
     });
   });
 
+  it("tracks multiple agents independently from a snapshot with two agents", () => {
+    const snapshot: ServerMessage = {
+      channel: "snapshot",
+      agents: [
+        { agentId: "apollo", name: "Apollo", status: "idle" },
+        { agentId: "hermes", name: "Hermes", status: "thinking" },
+      ],
+    };
+
+    const state = reduceOfficeState(initialOfficeState, snapshot);
+    expect(state).toEqual({
+      apollo: { agentId: "apollo", name: "Apollo", status: "idle", speechText: undefined },
+      hermes: { agentId: "hermes", name: "Hermes", status: "thinking", speechText: undefined },
+    });
+
+    // An event for one agent must not affect the other's state.
+    const next = reduceOfficeState(state, {
+      channel: "event",
+      event: {
+        type: "agent.status_changed",
+        id: "evt_h1",
+        timestamp: "2026-06-11T10:00:00.000Z",
+        correlationId: "task_h1",
+        agentId: "hermes",
+        status: "talking",
+        taskId: "task_h1",
+      },
+    });
+    expect(next.hermes.status).toBe("talking");
+    expect(next.apollo).toEqual(state.apollo);
+  });
+
   it("shows the speech bubble while talking, then clears it once idle again", () => {
     const upToTalking = messages.slice(0, 4).reduce(reduceOfficeState, initialOfficeState);
     expect(upToTalking.apollo).toMatchObject({ status: "talking", speechText: "Clear skies, Boss." });
