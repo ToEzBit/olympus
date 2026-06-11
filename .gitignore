@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Next.js / build
+.next/
+out/
+dist/
+build/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Engine state (SQLite durable queue) — runtime, not source
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Note: memory/*.md is intentionally NOT ignored — Boss wants git history of agent memory
